@@ -1,0 +1,23 @@
+options=optimoptions('fminunc','Display','iter','Algorithm','trust-region','SpecifyObjectiveGradient',true);
+% A=[-1 0;1 0;0 -1;0 1];
+% b=[-6;6;-6;6];
+A = [];
+b = [];
+Aeq=[];
+beq=[];
+lb = [];
+ub = [];
+nonlcon=@cons;
+x0=[4,1];
+[x,fval]=fmincon(@Objfun,x0,A,b,Aeq,beq,lb,ub,nonlcon,options)
+
+function [f,g]=Objfun(x)
+f=(x(1)^2+x(2)-11)^2+(x(1)+x(2)^2-7)^2;
+g=[2*x(1)+4*x(1)*(x(1).^2+x(2)-11)+2*x(2).^2-14;
+         2*x(2)+4*x(2)*(x(2).^2+x(1)-7)+2*x(1).^2-22];
+end
+
+function [c,ceq]=cons(x)
+c=[-x(1)-6;x(1)-6;-x(2)-6;x(2)-6];
+ceq=[];
+end
